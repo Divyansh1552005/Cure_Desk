@@ -7,7 +7,7 @@ const Navbar = () => {
     const navigate = useNavigate()
 
     const [showMenu, setShowMenu] = useState(false)
-    const [ token, setToken ] = useState(false) // Set to false to show Create account button
+    const [ token, setToken ] = useState(true) // Set to false to show Create account button
 
 
 
