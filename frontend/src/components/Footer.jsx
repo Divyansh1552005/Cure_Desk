@@ -19,10 +19,10 @@ const Footer = () => {
                     <ul className='flex flex-col gap-2 text-gray-600'>
                         {/* Adding links to Home and About */}
                         <li>
-                            <Link to="/" className="hover:underline">Home</Link>
+                            <Link to="/" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>Home</Link>
                         </li>
                         <li>
-                            <Link to="/about" className="hover:underline">About us</Link>
+                            <Link to="/about" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>About us</Link>
                         </li>
                         <li>Delivery</li>
                         <li>Privacy policy</li>
