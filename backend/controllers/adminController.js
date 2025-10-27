@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv/config';
 import {v2 as cloudinary} from 'cloudinary';
 import doctorModel from '../models/doctorModel.js';
-
+import jwt from 'jsonwebtoken';
 
 
 // api for adding doctor
@@ -54,16 +54,49 @@ const addDoctor = async(req,res) =>{
 
         const newDoctor = new doctorModel(doctorData)
         await newDoctor.save()
-        res.json({ success: true, message: 'Doctor Added' })
+        res.status(201).json({ success: true, message: 'Doctor Added' })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
 
-// admin auth
+// admin auth ie login
 
-export {addDoctor};
+const loginAdmin = async(req,res) =>{
+    try {
+        const {email,password} = req.body;
+
+        // check if details are present
+        if(!email || !password){
+            return res.status(400).json({success:false, message:"Missing Details"})
+        }
+
+        // now match email and id with env passwords if yes create a jwt session token
+        if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
+            const adminPayload = {
+                email: email
+            }
+
+            const token = jwt.sign(adminPayload, process.env.JWT_SECRET, {expiresIn: '1d'})
+
+            return res.status(200).json({success:true, message:"Admin logged in", token: token})
+        }else{
+            return res.status(401).json({success:false, message:"Invalid Admin Credentials"})
+        }
+
+
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, message: error.message })
+    }
+}
+
+
+
+export {addDoctor, loginAdmin};
 
