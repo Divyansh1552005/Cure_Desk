@@ -80,9 +80,9 @@ const loginAdmin = async(req,res) =>{
                 email: email
             }
 
-            const token = jwt.sign(adminPayload, process.env.JWT_SECRET, {expiresIn: '1d'})
+            const aToken = jwt.sign(adminPayload, process.env.JWT_SECRET, {expiresIn: '1d'})
 
-            return res.status(200).json({success:true, message:"Admin logged in", token: token})
+            return res.status(200).json({success:true, message:"Admin logged in", token: aToken})
         }else{
             return res.status(401).json({success:false, message:"Invalid Admin Credentials"})
         }
@@ -91,12 +91,50 @@ const loginAdmin = async(req,res) =>{
 
 
     } catch (error) {
+            console.log(error)
+            res.status(500).json({ success: false, message: error.message })
+    }
+}
+
+// api to get all doctors data for admin panel
+const allDoctors = async(req,res) =>{
+    try{
+        const doctors = await doctorModel.find().sort({createdAt: -1}).select('-password');
+        res.status(200).json({success:true, doctors})
+    }catch(error){
         console.log(error)
         res.status(500).json({ success: false, message: error.message })
     }
 }
 
+const changeAvailability = async(req,res) =>{
+    try {
+        const { docId } = req.body;
+        
+        if (!docId) {
+            return res.status(400).json({ success: false, message: "Doctor ID is required" });
+        }
 
+        // Find the doctor and get their current availability status
+        const doctor = await doctorModel.findById(docId);
+        if (!doctor) {
+            return res.status(404).json({ success: false, message: "Doctor not found" });
+        }
 
-export {addDoctor, loginAdmin};
+        // Toggle the availability
+        doctor.available = !doctor.available;
+        await doctor.save();
+
+        res.status(200).json({ 
+            success: true, 
+            message: `Doctor is now ${doctor.available ? 'available' : 'unavailable'}` 
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+export {addDoctor, loginAdmin, allDoctors, changeAvailability};
 
