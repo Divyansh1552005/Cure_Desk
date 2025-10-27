@@ -67,7 +67,60 @@ const registerUser = async (req, res) => {
 
 }
 
+// api for user login
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if(!email || !password){
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required!"
+            });
+        }
+
+        const user = await userModel.findOne({ email });
+
+        if(!user){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        }
+
+        // check validity of password
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if(!isMatch){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        }
+
+        // generate token
+        const token = jwt.sign({
+            id : user._id
+        }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
 
-export {registerUser};
+        res.status(200).json({
+            success: true,
+            token
+        });
+
+
+
+    } catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+}
+
+
+export {registerUser, loginUser};
 
