@@ -11,6 +11,8 @@ import MyAppointments from './pages/MyAppointments.jsx'
 import Appointment from './pages/Appointment.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function App() {
@@ -18,7 +20,7 @@ function App() {
 
   return (
     <div className="mx-4 sm:max-[10%]:">
-
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light"/>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

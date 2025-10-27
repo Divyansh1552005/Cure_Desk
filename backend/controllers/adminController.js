@@ -107,34 +107,5 @@ const allDoctors = async(req,res) =>{
     }
 }
 
-const changeAvailability = async(req,res) =>{
-    try {
-        const { docId } = req.body;
-        
-        if (!docId) {
-            return res.status(400).json({ success: false, message: "Doctor ID is required" });
-        }
-
-        // Find the doctor and get their current availability status
-        const doctor = await doctorModel.findById(docId);
-        if (!doctor) {
-            return res.status(404).json({ success: false, message: "Doctor not found" });
-        }
-
-        // Toggle the availability
-        doctor.available = !doctor.available;
-        await doctor.save();
-
-        res.status(200).json({ 
-            success: true, 
-            message: `Doctor is now ${doctor.available ? 'available' : 'unavailable'}` 
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: error.message });
-    }
-}
-
-export {addDoctor, loginAdmin, allDoctors, changeAvailability};
+export {addDoctor, loginAdmin, allDoctors};
 
