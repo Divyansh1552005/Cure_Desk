@@ -9,6 +9,7 @@ const AdminContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
+    // The ternary inside useState is for the fact if page is refreshed then it gets the token from localStorage rather than resetting it to empty string
     const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '')
 
     // const [appointments, setAppointments] = useState([])
