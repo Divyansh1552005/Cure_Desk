@@ -9,11 +9,11 @@ import { toast } from 'react-toastify'
 const Appointment = () => {
 
     const { docId } = useParams()
-    const { doctors, currencySymbol, backendUrl, token, getDoctosData } = useContext(AppContext)
+    const { doctors, currencySymbol, backendUrl, token, getDoctorsData } = useContext(AppContext)
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
     const [docInfo, setDocInfo] = useState(false)
-    const [docSlots, setDocSlots] = useState([]) 
+    const [docSlots, setDocSlots] = useState([])
     const [slotIndex, setSlotIndex] = useState(0)
     const [slotTime, setSlotTime] = useState('')
 
@@ -24,6 +24,7 @@ const Appointment = () => {
         setDocInfo(docInfo)
     }
 
+    // all available slots of doctor, will be used later to remove the booked slots from frontend
     const getAvailableSlots = async () => {
 
         setDocSlots([])
@@ -63,7 +64,8 @@ const Appointment = () => {
 
                 const slotDate = day + "_" + month + "_" + year
                 const slotTime = formattedTime
-
+                
+                // Check if slot is booked
                 const isSlotAvailable = docInfo.slots_booked && docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true
 
 
@@ -88,6 +90,7 @@ const Appointment = () => {
 
     const bookAppointment = async () => {
 
+        // checking if user is logged in or not
         if (!token) {
             toast.warning('Login to book appointment')
             return navigate('/login')
@@ -103,10 +106,12 @@ const Appointment = () => {
 
         try {
 
-            const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
+            const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
             if (data.success) {
                 toast.success(data.message)
-                getDoctosData()
+                getDoctorsData()
                 navigate('/my-appointments')
             } else {
                 toast.error(data.message)
@@ -119,12 +124,15 @@ const Appointment = () => {
 
     }
 
+    // fetching doctor info on docId or doctors change
     useEffect(() => {
         if (doctors.length > 0) {
             fetchDocInfo()
         }
     }, [doctors, docId])
 
+
+    // getting available slots on docInfo change (coz appointment book karne ke baad docInfo change hoga)
     useEffect(() => {
         if (docInfo) {
             getAvailableSlots()
@@ -187,4 +195,4 @@ const Appointment = () => {
     ) : null
 }
 
-export default Appointment
+export default Appointment;
