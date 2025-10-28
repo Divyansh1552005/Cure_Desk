@@ -10,20 +10,9 @@ const MyProfile = () => {
 
     const [image, setImage] = useState(false)
 
-    const [userData, setUserData] = useState({
-      name: "Edwart Vincent",
-      image: assets.profile_pic,
-      email: "dummt@gmail.com",
-      phone : "+91 8168001391",
-      address : {
-        line1 : "123, ABC Street",
-        line2 : "XYZ Area, City - 123456"
-      },
-      gender : "Male",
-      dob : "1990-01-01"
-    })
 
-    // const { token, backendUrl, userData, setUserData, loadUserProfileData } = useContext(AppContext)
+
+    const { token, backendUrl, userData, setUserData, loadUserProfileData } = useContext(AppContext)
 
     // Function to update user profile data using API
     const updateUserProfileData = async () => {
@@ -38,9 +27,14 @@ const MyProfile = () => {
             formData.append('gender', userData.gender)
             formData.append('dob', userData.dob)
 
+            // if user wanna update image only then we append it to formData
             image && formData.append('image', image)
 
-            const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, { headers: { token } })
+            const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
 
             if (data.success) {
                 toast.success(data.message)
@@ -73,8 +67,14 @@ const MyProfile = () => {
             }
 
             {isEdit
-                ? <input className='bg-gray-50 text-3xl font-medium max-w-60' type="text" onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} value={userData.name} />
-                : <p className='font-medium text-3xl text-[#262626] mt-4'>{userData.name}</p>
+                ? <input
+                    className='bg-gray-50 text-3xl font-medium w-full'
+                    type="text"
+                    onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))}
+                    value={userData.name}
+                    style={{ maxWidth: '100%' }}
+                />
+                : <p className='font-medium text-3xl text-[#262626] mt-4 break-words'>{userData.name}</p>
             }
 
             <hr className='bg-[#ADADAD] h-[1px] border-none' />
@@ -129,8 +129,8 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>Save information</button>
-                    : <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>Edit</button>
+                    ? <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all cursor-pointer'>Save information</button>
+                    : <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all cursor-pointer'>Edit</button>
                 }
 
             </div>
