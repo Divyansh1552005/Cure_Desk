@@ -79,7 +79,7 @@ const AdminContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/admin/appointments', { 
+            const { data } = await axios.get(backendUrl + '/api/admin/all-appointments', { 
                 headers: { 
                     'Authorization': `Bearer ${aToken}`,
                     'Content-Type': 'multipart/form-data'
@@ -100,28 +100,34 @@ const AdminContextProvider = (props) => {
 
     // Function to cancel appointment using API
     const cancelAppointment = async (appointmentId) => {
-
         try {
+            if (!aToken) {
+                toast.error('Please login first');
+                return;
+            }
 
-            const { data } = await axios.post(backendUrl + '/api/admin/cancel-appointment', { appointmentId }, { 
-                headers: { 
-                    'Authorization': `Bearer ${aToken}`,
-                    'Content-Type': 'multipart/form-data'
+            const { data } = await axios.post(
+                backendUrl + '/api/admin/cancel-appointment', 
+                { appointmentId }, 
+                { 
+                    headers: { 
+                        'Authorization': `Bearer ${aToken}`,
+                        'Content-Type': 'application/json'
+                    }
                 }
-            })
+            );
 
             if (data.success) {
-                toast.success(data.message)
-                getAllAppointments()
+                toast.success(data.message);
+                await getAllAppointments(); // Refresh the appointments list
             } else {
-                toast.error(data.message)
+                toast.error(data.message);
             }
 
         } catch (error) {
-            toast.error(error.message)
-            console.log(error)
+            console.error('Cancel appointment error:', error);
+            toast.error(error.response?.data?.message || 'Failed to cancel appointment');
         }
-
     }
 
     // Getting Admin Dashboard data from Database using API

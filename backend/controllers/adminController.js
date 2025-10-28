@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv/config';
 import {v2 as cloudinary} from 'cloudinary';
 import doctorModel from '../models/doctorModel.js';
+import appointmentModel from '../models/appointmentModel.js';
 import jwt from 'jsonwebtoken';
 
 
@@ -107,5 +108,85 @@ const allDoctors = async(req,res) =>{
     }
 }
 
-export {addDoctor, loginAdmin, allDoctors};
+
+// api to get all appointments list
+const appointmentAdmin = async (req,res) =>{
+
+   
+   try{ const appointments = await appointmentModel.find().sort({createdAt: -1});
+
+    res.status(200).json({success:true, appointments})
+
+
+}catch(error){
+    console.log(error)
+    res.status(500).json({ success: false, message: error.message })
+}
+
+
+
+}
+
+
+
+// appointment cancellation by admin
+
+
+const appointmentCancel = async (req, res) => {
+    try {
+        const { appointmentId } = req.body;
+
+        if (!appointmentId) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Appointment ID is required' 
+            });
+        }
+
+        // Check if appointment exists
+        const appointment = await appointmentModel.findById(appointmentId);
+        if (!appointment) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Appointment not found' 
+            });
+        }
+
+        // Check if appointment is already cancelled
+        if (appointment.cancelled) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Appointment is already cancelled' 
+            });
+        }
+
+        // Update the appointment
+        const updatedAppointment = await appointmentModel.findByIdAndUpdate(
+            appointmentId, 
+            { cancelled: true },
+            { new: true } // Return the updated document
+        );
+
+        res.status(200).json({ 
+            success: true, 
+            message: 'Appointment cancelled successfully',
+            appointment: updatedAppointment
+        });
+
+    } catch (error) {
+        console.error('Appointment cancellation error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: error.message || 'Error cancelling appointment'
+        });
+    }
+}
+
+
+
+
+
+
+export {addDoctor, loginAdmin, allDoctors, appointmentAdmin, appointmentCancel} ;
+
 
