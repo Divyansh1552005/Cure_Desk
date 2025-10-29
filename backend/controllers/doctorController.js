@@ -38,11 +38,11 @@ const doctorList = async (req, res) => {
     try {
 
         const doctors = await doctorModel.find({}).select(['-password', '-email'])
-        res.json({ success: true, doctors })
+        res.status(200).json({ success: true, doctors })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 
 }
@@ -84,11 +84,11 @@ const appointmentsDoctor = async (req, res) => {
         const { docId } = req.body
         const appointments = await appointmentModel.find({ docId })
 
-        res.json({ success: true, appointments })
+        res.status(200).json({ success: true, appointments })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -101,14 +101,14 @@ const appointmentCancel = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.docId === docId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
-            return res.json({ success: true, message: 'Appointment Cancelled' })
+            return res.status(200).json({ success: true, message: 'Appointment Cancelled' })
         }
 
-        res.json({ success: false, message: 'Appointment Cancelled' })
+        res.status(400).json({ success: false, message: 'Appointment Cancelled' })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 
 }
@@ -122,14 +122,14 @@ const appointmentComplete = async (req, res) => {
         const appointmentData = await appointmentModel.findById(appointmentId)
         if (appointmentData && appointmentData.docId === docId) {
             await appointmentModel.findByIdAndUpdate(appointmentId, { isCompleted: true })
-            return res.json({ success: true, message: 'Appointment Completed' })
+            return res.status(200).json({ success: true, message: 'Appointment Completed' })
         }
 
-        res.json({ success: false, message: 'Appointment Cancelled' })
+        res.status(400).json({ success: false, message: 'Appointment Cancelled' })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 
 }
@@ -143,11 +143,11 @@ const doctorProfile = async (req, res) => {
         const { docId } = req.body
         const profileData = await doctorModel.findById(docId).select('-password')
 
-        res.json({ success: true, profileData })
+        res.status(200).json({ success: true, profileData })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 
@@ -218,11 +218,11 @@ const doctorDashboard = async (req, res) => {
             latestAppointments: appointments.reverse()
         }
 
-        res.json({ success: true, dashData })
+        res.status(200).json({ success: true, dashData })
 
     } catch (error) {
         console.log(error)
-        res.json({ success: false, message: error.message })
+        res.status(500).json({ success: false, message: error.message })
     }
 }
 

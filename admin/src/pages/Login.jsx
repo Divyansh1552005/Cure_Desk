@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { DoctorContext } from '../context/DoctorContext'
 import { AdminContext } from '../context/AdminContext'
 import { toast } from 'react-toastify'
@@ -11,6 +12,7 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const navigate = useNavigate();
      
 
       const { setDToken } = useContext(DoctorContext)
@@ -28,6 +30,7 @@ const Login = () => {
                     setAToken(data.token);
                     localStorage.setItem('aToken', data.token);
                     toast.success('Login successful!');
+                    navigate('/admin-dashboard');
                 } else {
                     toast.error(data.message || 'Invalid credentials, please try again.');
                 }
@@ -62,6 +65,7 @@ const Login = () => {
                     setDToken(data.token);
                     localStorage.setItem('dToken', data.token);
                     toast.success('Doctor login successful!');
+                    navigate('/doctor-dashboard');
                 } else {
                     toast.error(data.message || 'Login failed');
                 }
