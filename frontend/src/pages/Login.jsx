@@ -13,6 +13,9 @@ const Login = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
+  // Track if we just performed login/signup
+  const [justAuthenticated, setJustAuthenticated] = useState(false)
 
   const navigate = useNavigate()
   const { backendUrl, token, setToken } = useContext(AppContext)
@@ -31,7 +34,10 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token);
           setToken(data.token);
+          setJustAuthenticated(true);
           toast.success('Registration successful!');
+          // Navigate after successful registration
+          setTimeout(() => navigate('/'), 1000);
         } else {
           toast.error(data.message);
         }
@@ -48,6 +54,10 @@ const Login = () => {
         if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
+          setJustAuthenticated(true);
+          toast.success('Login successful!');
+          // Navigate after successful login
+          setTimeout(() => navigate('/'), 1000);
         } else {
           toast.error(data.message)
         }
@@ -61,12 +71,7 @@ const Login = () => {
       }
 
 
-  // to redirect if already logged in or just after login/signup
-  useEffect(() => {
-    if (token) {
-      navigate('/')
-    }
-  }, [token])
+  // No automatic redirect - only redirect after successful auth in onSubmitHandler
 
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>

@@ -39,39 +39,39 @@ const Navbar = () => {
     }
 
     return (
-        <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD]'>
+        <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD] relative'>
             <img onClick={() => navigate('/')} className='w-44 cursor-pointer' src={assets.logo2} alt="" />
-            <ul className='md:flex items-start gap-5 font-medium hidden'>
-                <NavLink to='/' >
-                    <li className='py-1'>HOME</li>
+            <ul className='md:flex items-start gap-5 font-medium hidden relative z-10'>
+                <NavLink to='/' className='block'>
+                    <li className='py-1 px-2 hover:text-primary transition-colors cursor-pointer'>HOME</li>
                     <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
                 </NavLink>
-                <NavLink to='/doctors' >
-                    <li className='py-1'>ALL DOCTORS</li>
+                <NavLink to='/doctors' className='block'>
+                    <li className='py-1 px-2 hover:text-primary transition-colors cursor-pointer'>ALL DOCTORS</li>
                     <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
                 </NavLink>
-                <NavLink to='/about' >
-                    <li className='py-1'>ABOUT</li>
+                <NavLink to='/about' className='block'>
+                    <li className='py-1 px-2 hover:text-primary transition-colors cursor-pointer'>ABOUT</li>
                     <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
                 </NavLink>
-                <NavLink to='/contact' >
-                    <li className='py-1'>CONTACT</li>
+                <NavLink to='/contact' className='block'>
+                    <li className='py-1 px-2 hover:text-primary transition-colors cursor-pointer'>CONTACT</li>
                     <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden' />
                 </NavLink>
             </ul>
 
-            <div className='flex items-center gap-4 '>
+            <div className='flex items-center gap-4 relative z-30'>
 
                 {
                     token && userData
                         ? <div className='flex items-center gap-2 cursor-pointer group relative'>
-                            <div id="profile-dropdown-button" onClick={() => setShowMobileDropdown(!showMobileDropdown)} className='flex items-center gap-2'>
+                            <div id="profile-dropdown-button" onClick={() => setShowMobileDropdown(!showMobileDropdown)} className='flex items-center gap-2 p-1'>
                                 <img className='w-8 rounded-full' src={userData.image} alt="" />
-                                <img className={`w-2.5 transition-transform duration -200 ${showMobileDropdown ? 'rotate-180' : ''}`} src={assets.dropdown_icon} alt="" />
+                                <img className={`w-2.5 transition-transform duration-200 ${showMobileDropdown ? 'rotate-180' : ''}`} src={assets.dropdown_icon} alt="" />
                             </div>
                             {/* Desktop Dropdown (Hover) */}
-                            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden md:group-hover:block'>
-                                <div className='min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4 shadow-lg'>
+                            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-50 hidden md:group-hover:block'>
+                                <div className='min-w-48 bg-white border border-gray-200 rounded flex flex-col gap-4 p-4 shadow-xl'>
                                     <p onClick={() => navigate('/my-profile')} className='hover:text-black cursor-pointer'>My Profile</p>
                                     <p onClick={() => navigate('/my-appointments')} className='hover:text-black cursor-pointer'>My Appointments</p>
                                     <p onClick={logout} className='hover:text-black cursor-pointer'>Logout</p>
@@ -79,8 +79,8 @@ const Navbar = () => {
                             </div>
                             {/* Mobile Dropdown (Click) */}
                             <div id="profile-dropdown-content" 
-                                className={`absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 md:hidden ${showMobileDropdown ? 'block' : 'hidden'}`}>
-                                <div className='min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4 shadow-lg'>
+                                className={`absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-50 md:hidden ${showMobileDropdown ? 'block' : 'hidden'}`}>
+                                <div className='min-w-48 bg-white border border-gray-200 rounded flex flex-col gap-4 p-4 shadow-xl'>
                                     <p onClick={() => {
                                         navigate('/my-profile');
                                         setShowMobileDropdown(false);
