@@ -2,7 +2,7 @@
 
 A comprehensive medical appointment booking system built with MERN stack that allows patients to book appointments with doctors, manage their profiles, and interact with healthcare providers efficiently.
 
-
+It is hosted on [vercel](https://curedesk.vercel.app/)
 
 # FEATURES
 
