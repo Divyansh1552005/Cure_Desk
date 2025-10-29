@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
-// import { DoctorContext } from '../context/DoctorContext'
+import { DoctorContext } from '../context/DoctorContext'
 import { AdminContext } from '../context/AdminContext'
 import { toast } from 'react-toastify'
 
@@ -11,9 +11,9 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    //   const backendUrl = import.meta.env.VITE_BACKEND_UR L
+     
 
-    //   const { setDToken } = useContext(DoctorContext)
+      const { setDToken } = useContext(DoctorContext)
     const { setAToken, backendUrl } = useContext(AdminContext)
 
     const onSubmitHandler = async (event) => {
@@ -51,15 +51,34 @@ const Login = () => {
 
         }
         else {
+            // Doctor Login Logic
+            try {
+                const { data } = await axios.post(`${backendUrl}/api/doctor/login`, {
+                    email,
+                    password
+                });
 
-            //   const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password })
-            //   if (data.success) {
-            //     setDToken(data.token)
-            //     localStorage.setItem('dToken', data.token)
-            //   } else {
-            //     toast.error(data.message)
-            //   }
-
+                if (data.success) {
+                    setDToken(data.token);
+                    localStorage.setItem('dToken', data.token);
+                    toast.success('Doctor login successful!');
+                } else {
+                    toast.error(data.message || 'Login failed');
+                }
+            } catch (error) {
+                if (error.response) {
+                    // The server responded with an error
+                    const msg = error.response.data?.message || 'Invalid credentials, please try again.';
+                    toast.error(msg);
+                } else if (error.request) {
+                    // No response received from server
+                    toast.error('No response from server. Please check your internet or backend connection.');
+                } else {
+                    // Something else went wrong
+                    toast.error(`Login failed: ${error.message}`);
+                }
+                console.error('Doctor login error:', error);
+            }
         }
 
     }
