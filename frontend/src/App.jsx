@@ -9,6 +9,10 @@ import Contact from './pages/Contact.jsx'
 import MyProfile from './pages/MyProfile.jsx'
 import MyAppointments from './pages/MyAppointments.jsx'
 import Appointment from './pages/Appointment.jsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
+import TermsAndConditions from './pages/TermsAndConditions.jsx'
+import RefundPolicy from './pages/RefundPolicy.jsx'
+import ContactUs from './pages/ContactUs.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import {ToastContainer, toast} from "react-toastify";
@@ -32,6 +36,10 @@ function App() {
         <Route path="/my-profile" element={<MyProfile />} />
         <Route path="/my-appointments" element={<MyAppointments />} />
         <Route path="/appointment/:docId" element={<Appointment />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
+        <Route path="/contact-us" element={<ContactUs />} />
 
       </Routes>
 

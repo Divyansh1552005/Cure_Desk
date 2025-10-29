@@ -24,8 +24,18 @@ const Footer = () => {
                         <li>
                             <Link to="/about" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>About us</Link>
                         </li>
-                        <li>Delivery</li>
-                        <li>Privacy policy</li>
+                        <li>
+                            <Link to="/contact-us" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>Contact Us</Link>
+                        </li>
+                        <li>
+                            <Link to="/privacy-policy" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>Privacy Policy</Link>
+                        </li>
+                        <li>
+                            <Link to="/terms-and-conditions" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>Terms & Conditions</Link>
+                        </li>
+                        <li>
+                            <Link to="/refund-policy" className="hover:underline" onClick={() => scrollIntoView(0, 0)}>Refund Policy</Link>
+                        </li>
                     </ul>
                 </div>
 
