@@ -21,9 +21,9 @@ const TopDoctors = () => {
                         className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500'
                         key={index}
                     >
-                        {/* Fixed Image Styling */}
+                        {/* Improved Image Styling for Better Face Visibility */}
                         <div className='w-full h-60 overflow-hidden bg-[#EAEFFF]'>
-                            <img className='w-full h-full object-cover' src={item.image} alt={item.name} />
+                            <img className='w-full h-full object-cover' style={{objectPosition: 'center 20%'}} src={item.image} alt={item.name} />
                         </div>
 
                         <div className='p-4'>

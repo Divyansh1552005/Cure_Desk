@@ -58,7 +58,7 @@ const Doctors = () => {
             >
               {/* Fixed Image Styling */}
               <div className='w-full h-60 overflow-hidden bg-[#EAEFFF]'>
-                <img className='w-full h-full object-cover' src={item.image} alt={item.name} />
+                <img className='w-full h-full object-cover' style={{objectPosition: 'center 35%'}} src={item.image} alt={item.name} />
               </div>
 
               <div className='p-4'>
