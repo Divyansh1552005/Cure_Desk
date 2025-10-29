@@ -52,11 +52,11 @@ const ContactUs = () => {
               </div>
               <div className='flex items-center space-x-3'>
                 <span className='font-semibold text-gray-700'>Phone:</span>
-                <span className='text-gray-600'>+1 (555) 123-4567</span>
+                <span className='text-gray-600'>+91 88888 88888</span>
               </div>
               <div className='flex items-center space-x-3'>
                 <span className='font-semibold text-gray-700'>Address:</span>
-                <span className='text-gray-600'>123 Healthcare Avenue, Medical District, City 12345</span>
+                <span className='text-gray-600'>Ghanta Ghar Chowk, Near Railway Station, Bhiwani-127021, Haryana</span>
               </div>
             </div>
           </section>
