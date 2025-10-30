@@ -205,6 +205,21 @@ const updateProfile = async (req, res) => {
 const bookAppointment = async (req, res) => {
   try {
     const { userId, docId, slotDate, slotTime } = req.body;
+    
+    if (!slotTime) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Please select slot time" 
+      });
+    }
+    
+    if (!slotDate) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Please select appointment date" 
+      });
+    }
+    
     const docData = await doctorModel.findById(docId).select("-password");
 
     if (!docData.available) {
@@ -254,7 +269,7 @@ const bookAppointment = async (req, res) => {
     // save new slots data in docData
     await doctorModel.findByIdAndUpdate(docId, { slots_booked });
 
-    res.status(201).json({ success: true, message: "Appointment Booked" });
+    res.status(201).json({ success: true, message: "Appointment Booked! Pay online to confirm." });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
