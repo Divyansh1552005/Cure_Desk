@@ -42,9 +42,16 @@ app.use("/api/user", userRouter);
 
 
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: "ok", time: new Date().toISOString() });
+});
+
+
 app.get("/", (req, res) => {
   res.json({ status: "Server is running" });
 });
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
