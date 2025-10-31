@@ -16,22 +16,62 @@ const RelatedDoctors = ({ speciality, docId }) => {
   }, [doctors, speciality, docId])
 
   return (
-    <div className='w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 pt-5 px-3 sm:px-0'>
-      {relDoc.map((item, index) => (
-        <div onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }}
-          className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-all duration-500'
-          key={index}>
-          <img className='bg-[#EAEFFF] w-full' src={item.image} alt={item.name} />
-          <div className='p-4'>
-            <div className={`flex items-center gap-2 text-sm ${item.available ? 'text-green-500' : "text-gray-500"}`}>
-              <p className={`w-2 h-2 rounded-full ${item.available ? 'bg-green-500' : "bg-gray-500"}`}></p>
-              <p>{item.available ? 'Available' : "Not Available"}</p>
-            </div>
-            <p className='text-[#262626] text-lg font-medium'>{item.name}</p>
-            <p className='text-[#5C5C5C] text-sm'>{item.speciality}</p>
-          </div>
+    <div>
+      <h2 className='text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2'>
+        <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        Similar {speciality} Specialists
+      </h2>
+      
+      {relDoc.length === 0 ? (
+        <div className="text-center py-8 bg-gray-50 rounded-xl">
+          <p className="text-gray-600">No other specialists found in this category</p>
         </div>
-      ))}
+      ) : (
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
+          {relDoc.map((item, index) => (
+            <div 
+              key={index}
+              onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }}
+              className='group flex gap-4 p-3 sm:p-4 bg-white border border-gray-100 rounded-xl cursor-pointer hover:shadow-md hover:border-primary/20 transition-all duration-300'
+            >
+              <div className='w-20 sm:w-24 flex-shrink-0'>
+                <div className='aspect-square rounded-lg overflow-hidden bg-[#EAEFFF]'>
+                  <img 
+                    className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-300' 
+                    src={item.image} 
+                    alt={item.name}
+                  />
+                </div>
+              </div>
+              
+              <div className='flex-1 min-w-0'>
+                <h3 className='text-base sm:text-lg font-semibold text-gray-900 truncate group-hover:text-primary transition-colors'>
+                  {item.name}
+                </h3>
+                <p className='text-sm text-primary/80 font-medium mt-0.5'>
+                  {item.speciality}
+                </p>
+                <div className='flex items-center gap-2 mt-2'>
+                  <span 
+                    className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${
+                      item.available 
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-gray-100 text-gray-600'
+                    }`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${
+                      item.available ? 'bg-green-500' : 'bg-gray-400'
+                    }`} />
+                    {item.available ? 'Available' : 'Not Available'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

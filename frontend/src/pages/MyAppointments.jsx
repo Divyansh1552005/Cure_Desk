@@ -151,36 +151,141 @@ const MyAppointments = () => {
     }, [token])
 
     return (
-        <div>
-            <p className='pb-3 mt-12 text-lg font-medium text-gray-600 border-b'>My appointments</p>
-            <div className=''>
-                {appointments.map((item, index) => (
-                    <div key={index} className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b'>
-                        <div>
-                            <img className='w-36 bg-[#EAEFFF]' src={item.docData.image} alt="" />
-                        </div>
-                        <div className='flex-1 text-sm text-[#5E5E5E]'>
-                            <p className='text-[#262626] text-base font-semibold'>{item.docData.name}</p>
-                            <p>{item.docData.speciality}</p>
-                            <p className='text-[#464646] font-medium mt-1'>Address:</p>
-                            <p className=''>{item.docData.address.line1}</p>
-                            <p className=''>{item.docData.address.line2}</p>
-                            <p className=' mt-1'><span className='text-sm text-[#3C3C3C] font-medium'>Date & Time:</span> {slotDateFormat(item.slotDate)} |  {item.slotTime}</p>
-                        </div>
-                        <div></div>
-                         <div className='flex flex-col gap-2 justify-end text-sm text-center'>
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment !== item._id && <button onClick={() => setPayment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>Pay Online</button>}
-                            {/* {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentStripe(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.stripe_logo} alt="" /></button>} */}
-                            {!item.cancelled && !item.payment && !item.isCompleted && payment === item._id && <button onClick={() => appointmentRazorpay(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center'><img className='max-w-20 max-h-5' src={assets.razorpay_logo} alt="" /></button>}
-                            {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-[#696969]  bg-green-300'>Paid</button>}
+        <div className='max-w-7xl mx-auto px-4 py-8'>
+            <div className="text-center mb-12">
+                <h1 className='text-3xl md:text-4xl font-bold text-gray-800 mb-4'>My Appointments</h1>
+                <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
 
-                            {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button>}
-
-                            {!item.cancelled && !item.isCompleted && <button onClick={() => cancelAppointment(item._id)} className='text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button>}
-                            {item.cancelled && !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
+            <div className='space-y-6'>
+                {appointments.length === 0 ? (
+                    <div className="text-center py-12 bg-gray-50 rounded-2xl">
+                        <div className="w-16 h-16 mx-auto mb-4 text-gray-400">
+                            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                         </div>
+                        <h3 className="text-lg font-medium text-gray-900">No appointments found</h3>
+                        <p className="mt-1 text-gray-500">You haven't booked any appointments yet.</p>
                     </div>
-                ))}
+                ) : (
+                    appointments.map((item, index) => (
+                        <div key={index} className='bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow'>
+                            <div className='flex flex-col sm:flex-row gap-6 p-6'>
+                                {/* Doctor Image */}
+                                <div className='sm:w-48 flex-shrink-0'>
+                                    <div className='w-full aspect-square rounded-xl overflow-hidden bg-[#EAEFFF]'>
+                                        <img 
+                                            className='w-full h-full object-cover' 
+                                            src={item.docData.image} 
+                                            alt={item.docData.name} 
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Appointment Details */}
+                                <div className='flex-1 min-w-0'>
+                                    <div className='space-y-4'>
+                                        {/* Status Badge */}
+                                        <div className='flex flex-wrap gap-2'>
+                                            {item.cancelled && (
+                                                <span className='inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800'>
+                                                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Cancelled
+                                                </span>
+                                            )}
+                                            {item.isCompleted && (
+                                                <span className='inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800'>
+                                                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Completed
+                                                </span>
+                                            )}
+                                            {!item.cancelled && item.payment && !item.isCompleted && (
+                                                <span className='inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800'>
+                                                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                                                    </svg>
+                                                    Paid
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {/* Doctor Info */}
+                                        <div>
+                                            <h3 className='text-xl font-semibold text-gray-900 mb-1'>{item.docData.name}</h3>
+                                            <p className='text-primary font-medium'>{item.docData.speciality}</p>
+                                        </div>
+
+                                        {/* Appointment Details */}
+                                        <div className='grid sm:grid-cols-2 gap-4'>
+                                            <div>
+                                                <h4 className='text-sm font-medium text-gray-500 mb-1'>Date & Time</h4>
+                                                <p className='text-gray-900 flex items-center'>
+                                                    <svg className="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    {slotDateFormat(item.slotDate)} | {item.slotTime}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <h4 className='text-sm font-medium text-gray-500 mb-1'>Location</h4>
+                                                <p className='text-gray-900 flex items-center'>
+                                                    <svg className="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    {item.docData.address.line1}, {item.docData.address.line2}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className='sm:w-48 flex-shrink-0 flex flex-col gap-3 justify-center'>
+                                    {!item.cancelled && !item.payment && !item.isCompleted && (
+                                        <>
+                                            {payment !== item._id ? (
+                                                <button 
+                                                    onClick={() => setPayment(item._id)}
+                                                    className='w-full px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors flex items-center justify-center gap-2'
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                    </svg>
+                                                    Pay Online
+                                                </button>
+                                            ) : (
+                                                <button 
+                                                    onClick={() => appointmentRazorpay(item._id)}
+                                                    className='w-full px-4 py-2 rounded-lg bg-white border-2 border-primary text-primary hover:bg-primary/5 transition-colors flex items-center justify-center'
+                                                >
+                                                    <img className='max-h-6' src={assets.razorpay_logo} alt="Pay with Razorpay" />
+                                                </button>
+                                            )}
+                                        </>
+                                    )}
+
+                                    {!item.cancelled && !item.isCompleted && (
+                                        <button 
+                                            onClick={() => cancelAppointment(item._id)}
+                                            className='w-full px-4 py-2 rounded-lg border-2 border-red-500 text-red-500 hover:bg-red-50 transition-colors flex items-center justify-center gap-2'
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            Cancel
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     )

@@ -2,10 +2,13 @@ import React from 'react'
 
 const TermsAndConditions = () => {
   return (
-    <div className='max-w-4xl mx-auto px-4 py-8'>
-      <h1 className='text-3xl font-bold text-center mb-8 text-gray-800'>Terms and Conditions</h1>
+    <div className='max-w-4xl mx-auto px-4 py-12'>
+      <div className="text-center mb-12">
+        <h1 className='text-3xl md:text-4xl font-bold text-gray-800 mb-4'>Terms and Conditions</h1>
+        <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
+      </div>
       
-      <div className='space-y-6 text-gray-700'>
+      <div className='space-y-8 text-gray-700'>
         <section>
           <h2 className='text-2xl font-semibold mb-4 text-gray-800'>Acceptance of Terms</h2>
           <p className='mb-4'>

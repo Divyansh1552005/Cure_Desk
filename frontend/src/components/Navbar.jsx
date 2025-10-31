@@ -100,7 +100,7 @@ const Navbar = () => {
                             onClick={() => navigate('/login')} 
                             className='bg-[#5f6FFF] text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full font-light text-sm sm:text-base cursor-pointer hover:bg-[#4f5fff] transition-colors duration-200'
                           >
-                            Create account
+                            Sign up
                           </button>
                 }
                 <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
@@ -130,7 +130,7 @@ const Navbar = () => {
                                     onClick={() => { setShowMenu(false); navigate('/login'); }} 
                                     className='bg-[#5f6FFF] text-white px-6 py-3 rounded-full font-medium hover:bg-[#4f5fff] transition-colors duration-200'
                                 >
-                                    CREATE ACCOUNT
+                                    Sign up
                                 </button>
                             </>
                         )}

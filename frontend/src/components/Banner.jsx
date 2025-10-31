@@ -22,7 +22,7 @@ const Banner = () => {
                         navigate(token ? '/my-profile' : '/login'); 
                         scrollTo(0, 0) 
                     }} 
-                    className='bg-white text-sm sm:text-base text-[#595959] px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all '
+                    className='bg-white px-8 py-3.5 rounded-full text-[#595959] text-base md:text-lg font-medium mt-6 hover:scale-105 transition-all duration-300'
                 >
                     {token ? 'Go to My Profile' : 'Create account'}
                 </button>
