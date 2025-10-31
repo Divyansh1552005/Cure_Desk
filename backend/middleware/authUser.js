@@ -35,10 +35,10 @@ const authUser = async (req, res, next) => {
         next();
     } catch (error) {
         console.log('Token verification error:', error);
-        console.log('JWT_SECRET used:', process.env.JWT_SECRET);
+        // console.log('JWT_SECRET used:', process.env.JWT_SECRET);
         res.status(401).json({ 
             success: false, 
-            message: 'Invalid or expired token',
+            message: 'Invalid or expired token! Please login again.',
             error: error.message
         });
     }

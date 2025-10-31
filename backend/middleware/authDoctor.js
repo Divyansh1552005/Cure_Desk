@@ -36,7 +36,7 @@ const authDoctor = async (req, res, next) => {
         console.log('Doctor auth error:', error);
         res.status(401).json({ 
             success: false, 
-            message: 'Invalid or expired token' 
+            message: 'Invalid or expired token! Please login again.', 
         });
     }
 }

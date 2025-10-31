@@ -18,7 +18,7 @@ const authAdmin = (req, res, next) => {
       if (err) {
         return res.status(401).json({
           success: false,
-          message: "Invalid or expired token",
+          message: "Invalid or expired token! Please login again.",
         });
       }
 
