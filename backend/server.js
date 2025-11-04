@@ -46,6 +46,9 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: "ok", time: new Date().toISOString() });
 });
 
+app.get('/health2', (req, res) => {
+  res.status(200).send('Server is healthy');
+});
 
 app.get("/", (req, res) => {
   res.json({ status: "Server is running" });
